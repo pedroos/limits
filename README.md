@@ -1,2 +1,4 @@
 # limits
-Ongoing work in modeling a set-theoretical basis for mathematics in C#
+The objective is to find limitations in the language and choose a proper language to model a simplified set theory to describe theorems in elementary mathematics (real analysis, calculus...).
+
+Model features planned: inductive types.
