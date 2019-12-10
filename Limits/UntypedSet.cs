@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Limits.UntypedSet
 {
+    // Untyped sets are not very unusable
     public class Equatable : IEquatable<object> // Can't implement equality
     {
-
     }
 
     public class Set<T>

@@ -8,6 +8,12 @@ namespace Limits.ElemPrimitive
     public class Set<T>
     {
         protected readonly List<Set<T>> elems;
+        public List<Set<T>>.Enumerator Elems
+        {
+            get { 
+                return elems.GetEnumerator();
+            }
+        }
 
         // Constructor only called by the elements constructor
         protected Set()
@@ -80,6 +86,7 @@ namespace Limits.ElemPrimitive
             this.a = a;
             this.b = b;
         }
+        // The constructor determines the number of elements.
         public Tuple(Nuple<T> a, Nuple<T> b, Nuple<T> c) : this(a, new Tuple<T>(b, c)) { }
         public Tuple(Nuple<T> a, Nuple<T> b, Nuple<T> c, Nuple<T> d) : this(a, new Tuple<T>(b,
             new Tuple<T>(c, d))) { }
