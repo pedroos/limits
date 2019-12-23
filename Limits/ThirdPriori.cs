@@ -4,6 +4,34 @@ using System.Linq;
 
 namespace Limits.ThirdPriori
 {
+    public class Set<T>
+        where T : IEquatable<T>
+    {
+        protected HashSet<T> elems;
+        public List<Relation2<T>> relations;
+
+        public virtual void Add(T elem)
+        {
+            if (!elems.Add(elem)) return;
+        }
+
+        public Set()
+        {
+            elems = new HashSet<T>();
+            relations = new List<Relation2<T>>();
+        }
+
+        public bool Is<TRelation>(T a, T b)
+            where TRelation : Relation2<T>
+        {
+            Type relationType = typeof(TRelation);
+            var relation = relations.FirstOrDefault(r => r.GetType() == relationType);
+            if (relation == null) return false;
+
+            return relation.Is(a, b);
+        }
+    }
+
     public class OrderedTuple2<T> : IEquatable<OrderedTuple2<T>>
         where T : IEquatable<T>
     {
@@ -82,32 +110,4 @@ namespace Limits.ThirdPriori
     [TransitiveRelation]
     public class TransitiveRelation2<T> : Relation2<T>
         where T : IEquatable<T> { }
-
-    public class Set<T>
-        where T : IEquatable<T>
-    {
-        protected List<T> elems;
-        public List<Relation2<T>> relations;
-
-        public virtual void Add(T elem)
-        {
-            elems.Add(elem);
-        }
-
-        public Set()
-        {
-            elems = new List<T>();
-            relations = new List<Relation2<T>>();
-        }
-
-        public bool Is<TRelation>(T a, T b)
-            where TRelation : Relation2<T>
-        {
-            Type relationType = typeof(TRelation);
-            var relation = relations.FirstOrDefault(r => r.GetType() == relationType);
-            if (relation == null) return false;
-
-            return relation.Is(a, b);
-        }
-    }
 }

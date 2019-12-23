@@ -11,20 +11,29 @@ namespace Limits
     {
         public SampleSpace<T> Execute()
         {
-            return new Set<Event<T>>(new List<Set<Event<T>>> { }) 
-                as SampleSpace<T>;
+            var set = new Set<Event<T>>();
+            return set as SampleSpace<T>;
         }
     }
 
-    public class Point<T> : SetElement<T> 
+    public class Point<T> : SetElement<T>, IEquatable<Point<T>>
         where T : IEquatable<T>
     {
         public Point(T x) : base(x) {}
+
+        public bool Equals(Point<T> other)
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public class Event<T> : Set<Point<T>> 
+    public class Event<T> : Set<Point<T>>, IEquatable<Event<T>>
         where T : IEquatable<T>
     {
+        public bool Equals(Event<T> other)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class SampleSpace<T> : Set<Event<T>> 
@@ -33,10 +42,13 @@ namespace Limits
 
     }
 
-    public class Sample<T> : Set<Event<T>> 
+    public class Sample<T> : Set<Event<T>>, IEquatable<Sample<T>>
         where T : IEquatable<T>
     {
-
+        public bool Equals(Sample<T> other)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class Variable<T>

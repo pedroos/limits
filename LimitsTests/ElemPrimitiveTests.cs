@@ -21,35 +21,29 @@ namespace LimitsTests.ElemPrimitive
         [TestMethod]
         public void EmptyToStringTest()
         {
-            var s = new Set<int>(new List<Set<int>> { });
+            var s = new Set<int>();
             Assert.AreEqual("{}", s.ToString());
         }
 
         [TestMethod]
         public void SetToStringTest()
         {
-            var s = new Set<int>(new List<Set<int>>
-            {
-                new SetElement<int>(1),
-                new SetElement<int>(2)
-            });
+            var s = new Set<int>();
+            s.Add(new SetElement<int>(1));
+            s.Add(new SetElement<int>(2));
             Assert.AreEqual("{1, 2}", s.ToString());
         }
 
         [TestMethod]
-        public void UnarySetToStringTest()
+        public void NestedSetToStringTest()
         {
-            var s = new Set<int>(new List<Set<int>>
-            {
-                new Set<int>(new List<Set<int>>
-                {
-                    new Set<int>(new List<Set<int>>
-                    {
-                        new SetElement<int>(1)
-                    })
-                })
-            });
-            Assert.AreEqual("{{{1}}}", s.ToString());
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            var s3 = new Set<int>();
+            s3.Add(new SetElement<int>(1));
+            s2.Add(s3);
+            s1.Add(s2);
+            Assert.AreEqual("{{{1}}}", s1.ToString());
         }
 
         [TestMethod]
@@ -87,9 +81,128 @@ namespace LimitsTests.ElemPrimitive
         }
 
         [TestMethod]
-        public void TupleEqualsTest()
+        public void ElementEqualsPositiveTest()
         {
-
+            var se1 = new SetElement<int>(1);
+            var se2 = new SetElement<int>(1);
+            Assert.IsTrue(se1.Equals(se2));
         }
+
+        [TestMethod]
+        public void ElementEqualsNegativeTest()
+        {
+            var se1 = new SetElement<int>(1);
+            var se2 = new SetElement<int>(2);
+            Assert.IsFalse(se1.Equals(se2));
+        }
+
+        [TestMethod]
+        public void ElementEqualsSetNegativeTest()
+        {
+            var se1 = new SetElement<int>(1);
+            var s1 = new Set<int>();
+            Assert.IsFalse(se1.Equals(s1));
+        }
+
+        [TestMethod]
+        public void ElementContainsTest()
+        {
+            var se1 = new SetElement<int>(1);
+            var se2 = new SetElement<int>(2);
+            Assert.IsFalse(se1.Contains(se2));
+        }
+
+        [TestMethod]
+        public void SetContainsElementPositiveTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s1.Add(se1);
+            Assert.IsTrue(s1.Contains(se1));
+        }
+
+        [TestMethod]
+        public void SetContainsElementNegativeTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            Assert.IsFalse(s1.Contains(se1));
+        }
+
+        [TestMethod]
+        public void SetContainsElementNegativeNestedTest()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s2.Add(se1);
+            Assert.IsFalse(s1.Contains(se1));
+        }
+
+        [TestMethod]
+        public void SetEqualsPositiveTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s1.Add(se1);
+            var s2 = new Set<int>();
+            s2.Add(se1);
+            Assert.IsTrue(s1.Equals(s2));
+        }
+
+        [TestMethod]
+        public void SetEqualsNegativeTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s1.Add(se1);
+            var s2 = new Set<int>();
+            Assert.IsFalse(s1.Equals(s2));
+        }
+
+        [TestMethod]
+        public void SetEqualsElementNegativeTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            Assert.IsFalse(s1.Equals(se1));
+        }
+
+        [TestMethod]
+        public void SetContainsSetPositiveTest()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s2.Add(se1);
+            s1.Add(s2);
+            Assert.IsTrue(s1.Contains(s2));
+        }
+
+        [TestMethod]
+        public void SetContainsSetNegativeTest()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            Assert.IsFalse(s1.Contains(s2));
+        }
+
+        [TestMethod]
+        public void SetContainsSetNegative2Test()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            var s3 = new Set<int>();
+            s2.Add(s3);
+            s1.Add(s2);
+            // S3 is one level away
+            Assert.IsFalse(s1.Contains(s3));
+        }
+
+        //[TestMethod]
+        //public void TupleEqualsTest()
+        //{
+
+        //}
     }
 }

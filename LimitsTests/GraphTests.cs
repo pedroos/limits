@@ -21,23 +21,19 @@ namespace LimitsTests.Graph
                 new TupleElement<Node>(node1), 
                 new TupleElement<Node>(node2)
             );
-            var graph = new Graph(
-                new Set<Node>(new List<SetElement<Node>> {
-                    new SetElement<Node>(node1),
-                    new SetElement<Node>(node2)
-                }), 
-                new Set<Tuple<Node>>(new List<SetElement<Tuple<Node>>> {
-                    new SetElement<Tuple<Node>>(nodeRelation1)
-                }));
-            var elems = graph.a.Elems;
-            elems.MoveNext();
+            var vertices = new Set<Node>();
+            vertices.Add(new SetElement<Node>(node1));
+            vertices.Add(new SetElement<Node>(node2));
+            var edges = new Set<Tuple<Node>>();
+            edges.Add(new SetElement<Tuple<Node>>(nodeRelation1));
+            var graph = new Graph(vertices, edges);
+            var elems = graph.Item1.Elems;
+            Assert.AreEqual(elems.Count(), 2);
             // A set element can be a set
-            Assert.IsInstanceOfType(elems.Current, typeof(SetElement<Node>));
-            Assert.AreSame((elems.Current as SetElement<Node>).x, node1);
-            elems.MoveNext();
-            Assert.IsInstanceOfType(elems.Current, typeof(SetElement<Node>));
-            Assert.AreSame((elems.Current as SetElement<Node>).x, node2);
-            Assert.IsFalse(elems.MoveNext());
+            Assert.IsInstanceOfType(elems.ElementAt(0), typeof(SetElement<Node>));
+            Assert.AreSame((elems.ElementAt(0) as SetElement<Node>).x, node1);
+            Assert.IsInstanceOfType(elems.ElementAt(1), typeof(SetElement<Node>));
+            Assert.AreSame((elems.ElementAt(1) as SetElement<Node>).x, node2);
         }
     }
 }
