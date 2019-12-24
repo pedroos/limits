@@ -19,5 +19,6 @@ Some of the most developed namespaces are up to now:
 
 - NewDefs: an yet unfinished mapping of possible permutations of types of Collections according to Ordering, Uniqueness of Elements, and Typedness (Untyped, Singly-Typed or Type-Per-Element).
 
-References
-(1) Chartrand, Gary. 1984. Introductory Graph Theory. New York: Dover Publications.
+References:
+
+1. Chartrand, Gary. 1984. Introductory Graph Theory. New York: Dover Publications.
