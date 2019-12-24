@@ -13,8 +13,11 @@ Some of the most developed namespaces are up to now:
 
 - ElementTyped: recursively defined Tuples with Types per-Element and implicit conversion to Set Elements.
 
-- RecordGraph: with Sets and Relations, Graphs are possible; according to Chartrand (1), "graphs are (...) a set of vertices together with a relation on this set". 'togetherness' is not an Ordered Pair (because Pairs are positional), and element order is not relevant -- only that one of each of the elements exists. Other than a fixed-site Set with individual Types for each Element (which seems departed from the concept of Set), a Record seems to fit, being the single structure which can address its Elements directly, and having Types-per-Element. A class in C# is analog to a Record, so that's what's used. It is possible to implement Graph logic by handling Set events.
+- RecordGraph: with Sets and Relations, Graphs are possible; according to Chartrand (1), "graphs are (...) a set of vertices together with a relation on this set". 'togetherness' is not an Ordered Pair (because Pairs are positional), and element order is not relevant -- only that one of each of the elements exists. Other than a fixed-size Set with individual Types for each Element (which seems departed from the concept of Set), a Record seems to fit, being the single structure which can address its Elements directly, and having Types-per-Element. A class in C# is analog to a Record, so that's what's used. It is possible to implement Graph logic by handling Set events.
 
 - QuantDescr: an initial test of a notion of fixed-size Collections defined by Quantities and Positions, i.e.: a List containing two Integers, plus a String in the second position. More specifically, the interactions between Quantities and Positions. Could be termed an 'Irregular Collection' or a 'Family'.
 
 - NewDefs: an yet unfinished mapping of possible permutations of types of Collections according to Ordering, Uniqueness of Elements, and Typedness (Untyped, Singly-Typed or Type-Per-Element).
+
+References
+(1) Chartrand, Gary. 1984. Introductory Graph Theory. New York: Dover Publications.
