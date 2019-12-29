@@ -19,7 +19,7 @@ Some of the most developed namespaces are up to now:
 
 - NewDefs: an yet unfinished mapping of possible permutations of types of Collections according to Ordering, Uniqueness of Elements, and Typedness (Untyped, Singly-Typed or Type-Per-Element).
 
-- ElemObjs: a Set formalization scheme; unformalized Sets don't equal anything including themselves, until they are included in a parent Set, when they become uniquely identifiable across all present or future parent Sets. Valueless objects can be distinct; all objects inherit from Set, which are untyped. An Universe implementation with a single initial Set providing a Set tree.
+- ElemObjs: a Set formalization scheme; unformalized Sets don't equal anything, including themselves, until included in a parent Set, when they become uniquely identifiable across all present or future parent Sets. Valueless objects can be distinct; all objects inherit from Set, which are untyped. An Universe implementation with a single initial Set providing a Set tree.
 
 References:
 

@@ -16,7 +16,9 @@ namespace LimitsTests
         {
             var set1 = new Set();
             Assert.AreEqual(set1, set1); // Succeeds because short-circuited in the test 
-                // library; we shouldn't use AreEqual()
+                                         // library; we shouldn't use AreEqual()
+            Assert.AreNotEqual(set1.GetHashCode(), set1.GetHashCode()); // Should with high 
+                // probability succeed
             Assert.IsFalse(set1.Equals(set1)); // Equals() verification
             var set2 = new Set();
             Assert.AreNotEqual(set1, set2); // Hashcode verification

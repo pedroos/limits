@@ -18,7 +18,7 @@ namespace Limits.ElemOjbs
     public class Set : IEquatable<Set>
     {
         protected Guid? id;
-        private HashSet<Set> elems;
+        private readonly HashSet<Set> elems;
         public IEnumerable<Set> Enumerable { get { return elems.AsEnumerable(); } }
         protected int? maxSize;
         public Set()
@@ -75,6 +75,7 @@ namespace Limits.ElemOjbs
     }
 
     // An object may initialize its elements and be a record
+    // TODO: handle set events (Vertex element type, etc.)
     public class Graph : Tuple2
     {
         public Set VerticesSet { get; }
