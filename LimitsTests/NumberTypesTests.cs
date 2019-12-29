@@ -4,12 +4,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace LimitsTests.NumberTypes
+namespace LimitsTests
 {
     using Limits.NumberTypes;
 
     [TestClass]
-    public partial class LimitsTests
+    public partial class NumberTypesTests
     {
         [TestMethod]
         public void Test1()

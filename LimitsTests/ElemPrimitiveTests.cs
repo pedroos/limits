@@ -4,12 +4,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace LimitsTests.ElemPrimitive
+namespace LimitsTests
 {
     using Limits.ElemPrimitive;
+    using Limits.ElementTyped;
 
     [TestClass]
-    public partial class LimitsTests
+    public partial class ElemPrimitiveTests
     {
         [TestMethod]
         public void ElementToStringTest()
@@ -151,6 +152,52 @@ namespace LimitsTests.ElemPrimitive
         }
 
         [TestMethod]
+        public void SetEqualsPositiveNoOrderTest()
+        {
+            var s1 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            var se2 = new SetElement<int>(2);
+            s1.Add(se1);
+            s1.Add(se2);
+            var s2 = new Set<int>();
+            s2.Add(se2);
+            s2.Add(se1);
+            Assert.IsTrue(s1.Equals(s2));
+        }
+
+        [TestMethod]
+        public void SetEqualsPositiveSubsetTest()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            s1.Add(s2);
+
+            var s3 = new Set<int>();
+            var s4 = new Set<int>();
+            s3.Add(s4);
+
+            Assert.IsTrue(s1.Equals(s3));
+        }
+
+        [TestMethod]
+        public void SetEqualsPositiveSubsetWithElementsTest()
+        {
+            var s1 = new Set<int>();
+            var s2 = new Set<int>();
+            var se1 = new SetElement<int>(1);
+            s2.Add(se1);
+            s1.Add(s2);
+
+            var s3 = new Set<int>();
+            var s4 = new Set<int>();
+            var se2 = new SetElement<int>(1);
+            s4.Add(se2);
+            s3.Add(s4);
+
+            Assert.IsTrue(s1.Equals(s3));
+        }
+
+        [TestMethod]
         public void SetEqualsNegativeTest()
         {
             var s1 = new Set<int>();
@@ -188,21 +235,43 @@ namespace LimitsTests.ElemPrimitive
         }
 
         [TestMethod]
-        public void SetContainsSetNegative2Test()
+        public void SetContainsSetNegativeNestedTest()
         {
             var s1 = new Set<int>();
             var s2 = new Set<int>();
             var s3 = new Set<int>();
             s2.Add(s3);
             s1.Add(s2);
-            // S3 is one level away
+            // S3 is one level too deep
             Assert.IsFalse(s1.Contains(s3));
         }
 
-        //[TestMethod]
-        //public void TupleEqualsTest()
-        //{
+        [TestMethod]
+        public void RelationSymmetricTest()
+        {
+            var r = new Relation2<int>(symmetric: true);
+            r.Add(new Tuple2<int, int>(1, 2));
+            Assert.IsTrue(r.Contains(new Tuple2<int, int>(2, 1)));
+        }
 
-        //}
+        [TestMethod]
+        public void RelationSymmetricEqualityTest()
+        {
+            var r1 = new Relation2<int>(symmetric: true);
+            r1.Add(new Tuple2<int, int>(1, 2));
+            var r2 = new Relation2<int>(symmetric: true);
+            r2.Add(new Tuple2<int, int>(2, 1));
+            Assert.IsTrue(r1.Equals(r2));
+        }
+
+        [TestMethod]
+        public void LabelTest()
+        {
+            dynamic label1 = new { a = 1, b = new { x = 2, y = 3 } };
+            dynamic label2 = new { a = 1, b = new { x = 2, y = 3 } };
+            Assert.AreEqual(label1, label2);
+            dynamic label3 = new { a = 1, b = new { x = 2, y = 3 }, c = 4 };
+            Assert.AreNotEqual(label1, label3);
+        }
     }
 }

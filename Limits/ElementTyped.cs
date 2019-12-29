@@ -20,6 +20,10 @@ namespace Limits.ElementTyped
         {
             return other.a.Equals(a) && other.b.Equals(b);
         }
+        public override int GetHashCode()
+        {
+            return a.GetHashCode() ^ b.GetHashCode();
+        }
         // Implicit conversion to set element
         public static implicit operator ElemPrimitive.SetElement<Tuple2<T1,T2>>(Tuple2<T1,T2> t) => 
             new ElemPrimitive.SetElement<Tuple2<T1,T2>>(t);

@@ -10,7 +10,7 @@ namespace Limits.Graph
     {
         public bool Equals(Node other)
         {
-            throw new NotImplementedException();
+            return other.GetHashCode() == GetHashCode();
         }
     }
 

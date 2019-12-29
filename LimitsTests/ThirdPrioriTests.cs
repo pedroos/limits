@@ -4,12 +4,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace LimitsTests.ThirdPriori
+namespace LimitsTests
 {
     using Limits.ThirdPriori;
 
     [TestClass]
-    public partial class LimitsTests
+    public partial class ThirdPrioriTests
     {
         [TestMethod]
         public void ElementaryRelationTest()

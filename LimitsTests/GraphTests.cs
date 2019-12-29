@@ -4,13 +4,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace LimitsTests.Graph
+namespace LimitsTests
 {
     using Limits.Graph;
     using Limits.ElemPrimitive;
 
     [TestClass]
-    public partial class LimitsTests
+    public partial class GraphTests
     {
         [TestMethod]
         public void Test1()
@@ -27,13 +27,9 @@ namespace LimitsTests.Graph
             var edges = new Set<Tuple<Node>>();
             edges.Add(new SetElement<Tuple<Node>>(nodeRelation1));
             var graph = new Graph(vertices, edges);
-            var elems = graph.Item1.Elems;
-            Assert.AreEqual(elems.Count(), 2);
-            // A set element can be a set
-            Assert.IsInstanceOfType(elems.ElementAt(0), typeof(SetElement<Node>));
-            Assert.AreSame((elems.ElementAt(0) as SetElement<Node>).x, node1);
-            Assert.IsInstanceOfType(elems.ElementAt(1), typeof(SetElement<Node>));
-            Assert.AreSame((elems.ElementAt(1) as SetElement<Node>).x, node2);
+            Assert.AreEqual(graph.Item1.ElemCount, 2);
+            Assert.IsTrue(graph.Item1.Contains(new SetElement<Node>(node1)));
+            Assert.IsTrue(graph.Item1.Contains(new SetElement<Node>(node2)));
         }
     }
 }

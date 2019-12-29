@@ -12,7 +12,7 @@ namespace Limits
         public SampleSpace<T> Execute()
         {
             var set = new Set<Event<T>>();
-            return set as SampleSpace<T>;
+            return (SampleSpace<T>)set;
         }
     }
 

@@ -4,12 +4,12 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace LimitsTests.ElemAsSet
+namespace LimitsTests
 {
     using Limits.ElemAsSet;
 
     [TestClass]
-    public partial class LimitsTests
+    public partial class ElemAsSetTests
     {
         [TestMethod]
         public void SingletonToStringTest()
