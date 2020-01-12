@@ -12,19 +12,26 @@ namespace LimitsTests
     public partial class ElemOjbsTests
     {
         [TestMethod]
-        public void DetachedInequalityTest()
+        public void UnformalizedEqualityTest()
         {
             var set1 = new Set();
             Assert.AreEqual(set1, set1); // Succeeds because short-circuited in the test 
                                          // library; we shouldn't use AreEqual()
-            Assert.AreNotEqual(set1.GetHashCode(), set1.GetHashCode()); // Should with high 
-                // probability succeed
-            Assert.IsFalse(set1.Equals(set1)); // Equals() verification
+            Assert.AreEqual(set1.GetHashCode(), set1.GetHashCode());
+            Assert.IsTrue(set1.Equals(set1)); // Equals() verification
             var set2 = new Set();
-            Assert.AreNotEqual(set1, set2); // Hashcode verification
+            Assert.IsTrue(set1.Equals(set2)); // Unformalized sets always match
+        }
+
+        [TestMethod]
+        public void FormalizedInequalityTest()
+        {
+            var set1 = new Set();
+            var set2 = new Set();
+            set1.Add(set2);
             Assert.IsFalse(set1.Equals(set2));
         }
-        
+
         [TestMethod]
         public void ElementInequalityTest()
         {
@@ -95,6 +102,19 @@ namespace LimitsTests
             Assert.ThrowsException<MaxSetSizeException>(() => tuple2.Add(new Set()));
         }
 
-        // TODO: traverse a Set tree
+        //[TestMethod]
+        //public void WalkDownTest1()
+        //{
+        //    var set1 = new Set();
+        //    var set2 = new Set();
+        //    var set3 = new Set();
+        //    set2.Add(set3, false);
+        //    set1.Add(set2, false);
+        //    var walk1 = set1.WalkDown();
+        //    Assert.AreEqual(3, walk1.Count());
+        //    Assert.IsTrue(walk1.First().Equals(set1));
+        //    Assert.IsTrue(walk1.Skip(1).First().Equals(set2));
+        //    Assert.IsTrue(walk1.Skip(2).First().Equals(set3));
+        //}
     }
 }
