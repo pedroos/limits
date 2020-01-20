@@ -5,7 +5,8 @@
 
     <IsPackable>false</IsPackable>
 
-    <LangVersion>default</LangVersion>
+    <!--<LangVersion>default</LangVersion>-->
+    <LangVersion>8.0</LangVersion> <!-- 👈 Enable C# 8 features -->
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

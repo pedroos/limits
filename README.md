@@ -23,7 +23,11 @@ Some of the most developed namespaces are up to now:
 
 - ElemObjsUnf: (in progress) removing formalization from ElemObjs to explore Sets as Graphs, using structural equality instead (values/GetHashCode()). Identified SetElements, the set elements without elements, as Urelements [2] instead. SetElement is now the parent class of Sets and Urelements, allowing graph traversal: Sets have sub-elements and Urelements don't. The Regularity Axiom implemented as cycle checking. The Axiom is togglable on a per-Set basis, allowing activation and deactivation for new sub-elements if the conditions are met.
 
+<<<<<<< HEAD
 - PredColl: an implementation of irregular collections as collections plus collection predicates and element predicates. Collection predicates specify constraints on parts of the collection and element predicates specify conditions on elements, such that the same element conditions used to constrain and guarantee properties about the inserted elements of the collection can be used to retrieve and identify the elements. Collection predicates for quantities and positions are included. More or less models the behavior of classes (with untyped members), with the difference that the collection specification can be changed at runtime.
+=======
+- PredColl: an implementation of irregular collections as collections plus collection predicates and element predicates. Collection predicates specify constraints on parts of the collection and element predicates specify conditions on elements, such that the same element conditions used to constrain and guarantee properties about the inserted elements of the collection can be used to retrieve and identify them. Collection predicates for quantities and positions are included. More or less models the behavior of classes (with untyped members), with the difference that the collection specification can be changed at runtime.
+>>>>>>> f331bafa1147923f91e6791543b383727507a027
 
 References:
 
