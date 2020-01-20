@@ -5,16 +5,18 @@ using System.Linq;
 
 namespace Limits.ElemOjbs
 {
-    public static class Universe
-    {
-        // Set tree.
-        public static Set First { get; }
-        static Universe()
-        {
-            First = new Set();
-        }
-    }
+    //public static class Universe
+    //{
+    //    // Set tree.
+    //    public static Set First { get; }
+    //    static Universe()
+    //    {
+    //        First = new Set();
+    //    }
+    //}
 
+    // Unformalized sets are equal and the first set used to formalize the following sets.
+    // Implement walking down and comparing value equality to reference equality.
     public class Set : IEquatable<Set>
     {
         protected Guid? id;
@@ -43,15 +45,32 @@ namespace Limits.ElemOjbs
         }
         public bool Equals(Set other)
         {
-            // TODO: compare elements
-            return id.HasValue && other.id.HasValue && id.Equals(other.id.Value);
+            // Unformalized sets are equal
+            // Other sets are equal if their ids match
+            return (!id.HasValue && !other.id.HasValue) ||
+                id.HasValue && other.id.HasValue && id.Value.Equals(other.id.Value);
         }
         public override int GetHashCode()
         {
-            if (!id.HasValue) return new Random().Next(int.MinValue, int.MaxValue); // Try to 
-                // never match
+            if (!id.HasValue) return int.MinValue; // Always match
             return id.Value.GetHashCode();
         }
+        //public IEnumerable<Set> WalkDown()
+        //{
+        //    var curr = this;
+        //    while (true)
+        //    {
+        //        yield return curr;
+        //        foreach (var elem in curr.elems)
+        //        {
+        //            yield return elem;
+        //        }
+
+        //    }
+        //    yield return this;
+        //    foreach (Set set in elems)
+        //        yield return set;
+        //}
     }
 
     public abstract class SetElement : Set
@@ -100,10 +119,9 @@ namespace Limits.ElemOjbs
 
     #region Exceptions
 
-    public class MalformedSetException : Exception
-    {
+    public class MalformedSetException : Exception { }
 
-    }
+    public class CycleException : MalformedSetException { }
 
     public class MaxSetSizeException : MalformedSetException
     {
