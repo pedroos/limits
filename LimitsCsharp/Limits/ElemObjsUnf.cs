@@ -94,6 +94,21 @@ namespace Limits.ElemOjbsUnf
         //    foreach (Set set in elems)
         //        yield return set;
         //}
+
+        static Set reals;
+
+        static Set()
+        {
+            reals = new Set();
+        }
+
+        public static Set Reals
+        {
+            get
+            {
+                return reals;
+            }
+        }
     }
 
     public class Urelement : SetElement { }

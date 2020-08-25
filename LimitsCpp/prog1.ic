@@ -1,0 +1,5 @@
+// primitive types: int
+// global functions: typeof(var)
+type date day int, month int, year int
+var:coll coll count int 2 count date 1
+assertequal "coll" func:typeof(coll)

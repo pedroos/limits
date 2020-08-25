@@ -10,6 +10,22 @@ namespace LimitsTests
     using Limits.ElemPrimitive;
     using Limits.ElementTyped;
 
+    // Node: same as vertex
+    // Edge: two vertices
+    // Arc: directed edge
+    // Adjacent vertices: in the same edge
+    // Vertex degree: count of incident edges
+    // Path: sequence of connected edges
+    // Trail: path without repeated edges
+    // Circuit: trail from a vertex to itself with at least three edges. With one single vertex 
+    //   would be a reflecting edge, and with two edges isn't possible. Trail from a vertex to 
+    //   itself with more than one edge. May repeat edges.
+    // Cycle: circuit without repeating edges.
+    // Regular graph: all vertices with same degree.
+    // Complete graph: all vertices are adjacent.
+    // Bridge: edge only connection between two other edges.
+    // Component: largest connected subgraphs of a graph (separated by disconnections)
+
     [TestClass]
     public partial class RecordGraphExercises
     {

@@ -45,9 +45,9 @@ namespace Limits.ElemPrimitive
         public bool Contains(Set<T> set)
         {
             // Element comparison
-            if (set is SetElement <T>)
+            if (set is SetElement <T> se)
             {
-                return elems.OfType<SetElement<T>>().Any(e => e.Equals((SetElement<T>)set));
+                return elems.OfType<SetElement<T>>().Any(e => e.Equals(se));
             }
             // Set comparison
             return elems.Any(e => e.Equals(set));
@@ -58,8 +58,8 @@ namespace Limits.ElemPrimitive
         }
         public virtual bool Equals(Set<T> other)
         {
-            if (other is SetElement<T>)
-                return ((SetElement<T>)other).Equals(this);
+            if (other is SetElement<T> se)
+                return se.Equals(this);
             if (other.elems.Any(e => !Contains(e))) return false;
             if (elems.Any(e => !other.Contains(e))) return false;
             return true;
@@ -145,7 +145,7 @@ namespace Limits.ElemPrimitive
         }
     }
 
-    // Note: this is a single-type tuple
+    // Single-type tuple
     public class Tuple<T> : Nuple<T>, IEquatable<Tuple<T>>
         where T : IEquatable<T>
     {
@@ -177,6 +177,13 @@ namespace Limits.ElemPrimitive
             return set;
         }
 
+        // Returns whether it is a one-uple, pair, triple, etc...
+        public int Degree()
+        {
+            // TODO: recursive checking of b element
+            return 1;
+        }
+
         public bool Equals(Tuple<T> other)
         {
             // Isto deve ser recursivo... pois as estruturas das tuplas podem ser diferentes.
@@ -195,7 +202,9 @@ namespace Limits.ElemPrimitive
 
     #endregion
 
-    public class Relation2<T> : Set<Tuple2<T, T>>
+    // Relation should not be directly instantiable. Kinds of relations should be subclasses.
+    // This relation uses poly-typed tuples, but I forgot why.
+    public abstract class Relation2<T> : Set<Tuple2<T, T>>
         where T : IEquatable<T>
     {
         public bool Symmetric { get; }
@@ -207,7 +216,13 @@ namespace Limits.ElemPrimitive
             Reflexive = reflexive;
             Transitive = transitive;
         }
-        public override void Add(Set<Tuple2<T, T>> elem) {
+        
+        /// <summary>
+        /// Adds pairs of related elements to the relation
+        /// </summary>
+        /// <param name="elem">The pairs of related elements</param>
+        public override void Add(Set<Tuple2<T, T>> elem) 
+        {
             // Element-only set.
             if (!(elem is SetElement<Tuple2<T, T>>)) 
                 throw new ElementOnlySetException();
@@ -246,4 +261,13 @@ namespace Limits.ElemPrimitive
             }
         }
     }
+
+    //public class Function<T> : Relation2<T> 
+    //    where T : IEquatable<T>
+    //{
+    //    public override void Add(Set<Tuple2<T, T>> elem)
+    //    {
+    //        if (elem.)
+    //    }
+    //}
 }

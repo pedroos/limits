@@ -5,6 +5,7 @@ using System.Text;
 namespace Limits.RecordGraph
 {
     using Limits.ElemPrimitive;
+    using Limits.ElemOjbsUnf;
     public struct Vertex : IEquatable<Vertex>
     {
         public bool Equals(Vertex other)
@@ -14,6 +15,7 @@ namespace Limits.RecordGraph
         // Implicit conversion to set element
         public static implicit operator SetElement<Vertex>(Vertex v) => new SetElement<Vertex>(v);
     }
+
     public class InexistantVertexException : Exception 
     {
         public Vertex Vertex { get; }
@@ -22,6 +24,9 @@ namespace Limits.RecordGraph
             Vertex = vertex;
         }
     }
+
+    class EdgeSet : Relation2<Vertex> { }
+
     public class Graph
     {
         public Set<Vertex> VertexSet { get; }
@@ -31,7 +36,7 @@ namespace Limits.RecordGraph
         public Graph()
         {
             VertexSet = new Set<Vertex>();
-            EdgeSet = new Relation2<Vertex>();
+            EdgeSet = new EdgeSet();
             VertexSet.ElementAdded += (elem) =>
             {
                 if (!(elem is SetElement<Vertex>))

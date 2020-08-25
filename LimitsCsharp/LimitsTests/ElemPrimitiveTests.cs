@@ -246,10 +246,16 @@ namespace LimitsTests
             Assert.IsFalse(s1.Contains(s3));
         }
 
+        class SymmetricRelation<T> : Relation2<T> 
+            where T : IEquatable<T>
+        {
+            public SymmetricRelation() : base(symmetric: true) { }
+        }
+
         [TestMethod]
         public void RelationSymmetricTest()
         {
-            var r = new Relation2<int>(symmetric: true);
+            var r = new SymmetricRelation<int>();
             r.Add(new Tuple2<int, int>(1, 2));
             Assert.IsTrue(r.Contains(new Tuple2<int, int>(2, 1)));
         }
@@ -257,9 +263,9 @@ namespace LimitsTests
         [TestMethod]
         public void RelationSymmetricEqualityTest()
         {
-            var r1 = new Relation2<int>(symmetric: true);
+            var r1 = new SymmetricRelation<int>();
             r1.Add(new Tuple2<int, int>(1, 2));
-            var r2 = new Relation2<int>(symmetric: true);
+            var r2 = new SymmetricRelation<int>();
             r2.Add(new Tuple2<int, int>(2, 1));
             Assert.IsTrue(r1.Equals(r2));
         }
