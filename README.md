@@ -30,4 +30,6 @@ As of Aug/2020, the code is progressively being ported to *Scala*. The two main 
 * Explore class variance, where variance implementing an Interface in C# is uncomfortable
 * Explore Sum types for communal supertypes without inheritance (without discarding Object Orientation)
 
+#### Scala Packages
+
 - ElemPrimitive: Sum type for Set element. Set and Set element can be used interchangeably through a SetItem "supertype"; the lack of inheritance expresses the lack of similarity between a Set element and a Set.
