@@ -27,7 +27,7 @@ An article discussing this project can be found [here](https://psobo.com/blog/li
 - ElemAsRelation: per the Wikipedia article on Urelements, modeling a Set element as a Set with a unary relation, and possibilities from modeling properties as unary relations in objects.
 
 As of Aug/2020, the code is progressively being ported to *Scala*. The two main motivations are:
-* Explore class variance, where variance implementing an Interface in C# is uncomfortable
+* Explore class generic covariance, where type parameter covariance implementing an Interface in C# is uncomfortable
 * Explore Sum types for communal supertypes without inheritance (without discarding Object Orientation)
 
 #### Scala Packages
