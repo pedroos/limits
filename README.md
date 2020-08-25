@@ -2,8 +2,6 @@ An exploration of foundations of mathematics in programming languages. Begun wit
 
 The objective is to model a verifiable set of behaviors through unit tests.
 
-An article discussing this project can be found [here](https://psobo.com/blog/limits_an_exploration.html).
-
 #### Description of some namespaces in the C# project
 
 - ElemPrimitive: an implementation of a Set in Inheritance by modeling a Set Element with a value which is also a Set. It is possible to verify element membership and set equality, including nested Sets. Also defines recursive (single-typed) Ordered Tuples, and tries to implement converting to/from Sets.
