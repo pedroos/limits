@@ -1,7 +1,5 @@
 An exploration of foundations of mathematics in programming languages. Begun with C# and Object Orientation modeling Sets, Tuples and progressing towards other objects.
 
-The objective is to model a verifiable set of behaviors through unit tests.
-
 #### Description of some namespaces in the C# project
 
 - ElemPrimitive: an implementation of a Set in Inheritance by modeling a Set Element with a value which is also a Set. It is possible to verify element membership and set equality, including nested Sets. Also defines recursive (single-typed) Ordered Tuples, and tries to implement converting to/from Sets.
