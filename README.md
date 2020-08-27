@@ -1,10 +1,8 @@
-# limits
-An exploration of modeling set-theoretic and other related objects in C#.
+An exploration of foundations of mathematics in programming languages. Begun with C# and Object Orientation modeling Sets, Tuples and progressing towards other objects.
 
-A more in-depth discussion of this project has been uploaded to https://pedroos.github.io/limits_an_exploration.html.
+The objective is to model a verifiable set of behaviors through unit tests.
 
-This repository is in flux and is being constantly changed.
-Some of the most developed namespaces are up to now:
+#### Description of some namespaces in the C# project
 
 - ElemPrimitive: an implementation of a Set in Inheritance by modeling a Set Element with a value which is also a Set. It is possible to verify element membership and set equality, including nested Sets. Also defines recursive (single-typed) Ordered Tuples, and tries to implement converting to/from Sets.
 
@@ -23,3 +21,13 @@ Some of the most developed namespaces are up to now:
 - ElemObjsUnf: (in progress) removing formalization from ElemObjs to explore Sets as Graphs, using structural equality instead (values/GetHashCode()). Set elements without elements, as Urelements. SetElement is now the parent class of Sets and Urelements, allowing graph traversal: Sets have sub-elements and Urelements don't. The Regularity Axiom as cycle checking, toggable per-Set.
 
 - PredColl: exploration of irregular collections as collections with predicates.
+
+- ElemAsRelation: per the Wikipedia article on Urelements, modeling a Set element as a Set with a unary relation, and possibilities from modeling properties as unary relations in objects.
+
+As of Aug/2020, the code is progressively being ported to *Scala*. The two main motivations are:
+* Explore class generic covariance, where type parameter covariance implementing an Interface in C# is uncomfortable
+* Explore Sum types for communal supertypes without inheritance (without discarding Object Orientation)
+
+#### Scala packages
+
+- ElemPrimitive: Sum type for Set element. Set and Set element can be used interchangeably through a SetItem "supertype"; the lack of inheritance expresses the lack of similarity between a Set element and a Set.
