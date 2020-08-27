@@ -90,7 +90,7 @@ namespace Limits.ElemPrimitive
         }
         public override bool Equals(Set<T> other)
         {
-            return other is SetElement<T> ? Equals((SetElement<T>)other) : false;
+            return other is SetElement<T> se && Equals(se);
         }
         public bool Equals(SetElement<T> other)
         {
@@ -121,7 +121,7 @@ namespace Limits.ElemPrimitive
     /// </summary>
     public class ElementOnlySetException : Exception
     {
-
+        public ElementOnlySetException() : base("The set being added to only accepts set elements, not other sets") { }
     }
 
     #region Single-type tuples
@@ -167,10 +167,10 @@ namespace Limits.ElemPrimitive
         {
             var set = new Set<T>();
             set.Add(
-                a is TupleElement<T> ?
-                    new SetElement<T>(((TupleElement<T>)a).x) : 
+                a is TupleElement<T> te ?
+                    new SetElement<T>(te.x) : 
                 (a is System.Tuple<T> ? 
-                    new SetElement<T>(default(T)) : 
+                    new SetElement<T>(default) : 
                 ((Tuple<T>)a).AsSet())
                 // Parou
             );
@@ -233,7 +233,7 @@ namespace Limits.ElemPrimitive
 
             if (Symmetric)
             {
-                base.Add(new Tuple2<T, T>(tuple.b, tuple.a));
+                base.Add(new SetElement<Tuple2<T, T>>(new Tuple2<T, T>(tuple.b, tuple.a)));
             }
 
             if (Reflexive)

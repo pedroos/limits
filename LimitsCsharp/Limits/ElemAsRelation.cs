@@ -1,10 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Limits.ElemAsRelation
 {
     using Limits.ElemPrimitive;
+
+    // Common type for Set and SetElement
+    public interface ISetItem<T>
+        where T : IEquatable<T>
+    { }
+
+    // Same class as ElemPrimitive, but implementing ISetItem
+    public class Set<T> : ISetItem<T>, IEquatable<Set<T>>
+        where T : IEquatable<T>
+    {
+        protected readonly HashSet<ISetItem<T>> elems;
+        public event Func<ISetItem<T>, bool> BeforeElementAdded;
+        public event Action<ISetItem<T>> ElementAdded;
+        public int ElemCount { get; private set; } // Only non-set elements
+        public Set()
+        {
+            ElemCount = 0;
+            elems = new HashSet<ISetItem<T>>();
+        }
+        public virtual void Add(ISetItem<T> elem)
+        {
+            if (elems.Contains(elem)) return;
+            if (BeforeElementAdded != null && !BeforeElementAdded.Invoke(elem)) return;
+            elems.Add(elem);
+            ElemCount = elems.OfType<SetElement<T>>().Count();
+            ElementAdded?.Invoke(elem);
+        }
+        public bool Contains(ISetItem<T> set) => 
+            set is SetElement<T> se ?                                      // Element comparison
+                elems.OfType<SetElement<T>>().Any(e => e.Equals(se)) : 
+                elems.Cast<Set<T>>().Any(e => e.Equals((Set<T>)set));      // Set comparison
+        public override string ToString() => string.Format("{{{0}}}", string.Join(", ", 
+            elems.Select(e => e.ToString())));
+        public virtual bool Equals(Set<T> other) => 
+            other is SetElement<T> se ? 
+                se.Equals(this) : 
+                !(
+                    other.elems.Any(e => !Contains(e)) ||    // Set equality: each set contains all other 
+                    elems.Any(e => !other.Contains(e))       // set's elements
+                );
+    }
+
+    // Not anymore a child of Set
+    public class SetElement<T> : ISetItem<T>, IEquatable<ISetItem<T>>, IEquatable<SetElement<T>>
+        where T : IEquatable<T>
+    {
+        public readonly T x;
+
+        public SetElement(T x)
+        {
+            if (typeof(T) == typeof(Set<T>))
+                throw new InvalidSetElementException("The value of a set element can not " +
+                    "be a set.");
+            this.x = x;
+        }
+        public bool Equals(ISetItem<T> other) => other is SetElement<T> se && Equals(se);
+        public bool Equals(SetElement<T> other) => x.Equals(other.x);
+        public override string ToString() => string.Format("{0}", x);
+        public override int GetHashCode() => x.GetHashCode();
+    }
+
+    // Nuple serves only as a common base class for TupleElement and Tuple.
+    // This Nuple is a SetItem.
+    public abstract class Nuple<T> : ISetItem<T>, IEquatable<Nuple<T>>
+        where T : IEquatable<T>
+    {
+        public bool Equals(Nuple<T> other) => this is TupleElement<T> thisTe && other is TupleElement<T> otherTe && 
+            thisTe.Equals(otherTe);
+    }
+
+    public class TupleElement<T> : Nuple<T>, IEquatable<TupleElement<T>>
+        where T : IEquatable<T>
+    {
+        public readonly T x;
+        public TupleElement(T x) => this.x = x;
+        public bool Equals(TupleElement<T> other) => x.Equals(other.x);
+        public override string ToString() => x.ToString();
+    }
 
     public class Tuple1<T> : Nuple<T>, IEquatable<Tuple1<T>>
         where T : IEquatable<T>
@@ -20,19 +98,17 @@ namespace Limits.ElemAsRelation
                     new SetElement<T>(te.x) :
                 (a is System.Tuple<T> ?
                     new SetElement<T>(default) :
-                ((Tuple1<T>)a).AsSet())
+                (ISetItem<T>)((Tuple1<T>)a).AsSet())
             // Parou
             );
             return set;
         }
-
         // Returns whether it is a one-uple, pair, triple, etc...
         public virtual int Degree()
         {
             // TODO: recursive checking of b element
             return 1;
         }
-
         public bool Equals(Tuple1<T> other) => a.Equals(other.a);
 
         public override string ToString() => $"({a})";
@@ -54,20 +130,13 @@ namespace Limits.ElemAsRelation
             new Tuple<T>(c, new Tuple<T>(d, e))))
         { }
 
-        public bool Equals(Tuple<T> other)
-        {
-            // Isto deve ser recursivo... pois as estruturas das tuplas podem ser diferentes.
-            // Uma tupla pode ter uma tupla onde a outra tupla tem um elemento.
-            // Parece que aqui haverá problema... pois teremos que checar igualdade de Tuples e 
-            // TupleElements, que têm membros diferentes... Poderia ser implementado na Nuple e 
-            // checando os tipos e só compara os tipos iguais?
-            return a.Equals(other.a) && b.Equals(other.b);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("({0}, {1})", a, b);
-        }
+        // Isto deve ser recursivo... pois as estruturas das tuplas podem ser diferentes.
+        // Uma tupla pode ter uma tupla onde a outra tupla tem um elemento.
+        // Parece que aqui haverá problema... pois teremos que checar igualdade de Tuples e 
+        // TupleElements, que têm membros diferentes... Poderia ser implementado na Nuple e 
+        // checando os tipos e só compara os tipos iguais?
+        public bool Equals(Tuple<T> other) => a.Equals(other.a) && b.Equals(other.b);
+        public override string ToString() => string.Format("({0}, {1})", a, b);
     }
 
     public abstract class Relation1<T> : Set<Tuple1<T>> 
@@ -82,8 +151,7 @@ namespace Limits.ElemAsRelation
             Reflexive = reflexive;
             Transitive = transitive;
         }
-
-        public override void Add(Set<Tuple1<T>> elem)
+        public override void Add(ISetItem<Tuple1<T>> elem)
         {
             // Element-only set.
             if (!(elem is SetElement<Tuple1<T>>)) 
@@ -112,10 +180,10 @@ namespace Limits.ElemAsRelation
         /// Adds pairs of related elements to the relation
         /// </summary>
         /// <param name="elem">The pairs of related elements</param>
-        public override void Add(Set<Tuple1<T>> elem)
+        public override void Add(ISetItem<Tuple1<T>> elem)
         {
             // Element-only set.
-            if (!(elem is SetElement<Tuple<T>> setElem))
+            if (!(elem is SetElement<Tuple1<T>> setElem))
                 throw new ElementOnlySetException();
 
             if (setElem.x.Degree() != 1)
@@ -125,6 +193,7 @@ namespace Limits.ElemAsRelation
 
             var tuple = setElem.x;
 
+            // PAROU
             //if (Symmetric)
             //{
             //    base.Add(new Tuple<T, T>(tuple.b, tuple.a));
@@ -154,5 +223,14 @@ namespace Limits.ElemAsRelation
             //        base.Add(new Tuple2<T, T>(x, tuple.b));
             //}
         }
+    }
+
+    public static class Extensions
+    {
+        /// <summary>
+        /// Converts a tuple element to a 1-tuple set element
+        /// </summary>
+        public static SetElement<Tuple1<T>> SetElement<T>(this TupleElement<T> te)
+            where T : IEquatable<T> => new SetElement<Tuple1<T>>(new Tuple1<T>(te));
     }
 }

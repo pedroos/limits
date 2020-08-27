@@ -24,9 +24,13 @@ namespace Limits.ElementTyped
         {
             return a.GetHashCode() ^ b.GetHashCode();
         }
-        // Implicit conversion to set element
-        public static implicit operator ElemPrimitive.SetElement<Tuple2<T1,T2>>(Tuple2<T1,T2> t) => 
-            new ElemPrimitive.SetElement<Tuple2<T1,T2>>(t);
+
+        // Implicit conversion to set element. Allows 
+        // new Tuple2<T, T>(tuple.b, tuple.a)
+        // instead of 
+        // new SetElement<Tuple2<T, T>>(new Tuple2<T, T>(tuple.b, tuple.a))
+        public static implicit operator ElemPrimitive.SetElement<Tuple2<T1, T2>>(Tuple2<T1, T2> t) =>
+            new ElemPrimitive.SetElement<Tuple2<T1, T2>>(t);
     }
 
     public class Tuple3<T1,T2,T3> : Tuple2<T1,Tuple2<T2,T3>>
