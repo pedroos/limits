@@ -203,7 +203,7 @@ namespace Limits.ElemPrimitive
     #endregion
 
     // Relation should not be directly instantiable. Kinds of relations should be subclasses.
-    // This relation uses poly-typed tuples, but I forgot why.
+    // This relation uses many-typed tuples, but I forgot why.
     public abstract class Relation2<T> : Set<Tuple2<T, T>>
         where T : IEquatable<T>
     {

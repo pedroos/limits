@@ -46,9 +46,13 @@ namespace Limits.ElemOjbsUnf
         public void Add(SetElement elem)
         {
             // Regularity check
+            // Walk up the tree to try to find another instance of itself in the path.
+            // First, skip to the last Set known to be Regular.
+            // Then, check from it to the root.
+
             var walkUp = WalkUp();
-            var lastRegular = walkUp.LastOrDefault(wu => wu.Regularity);
-            var walkUpUntilLastRegular = walkUp.TakeWhile(wu => wu.Equals(lastRegular));
+            //var lastRegular = walkUp.LastOrDefault(wu => wu.Regularity);
+            //var walkUpUntilLastRegular = walkUp.TakeWhile(wu => wu.Equals(lastRegular));
             foreach (var parentSet in walkUp)
             {
                 // Walk until lastRegular... Needs equality...
