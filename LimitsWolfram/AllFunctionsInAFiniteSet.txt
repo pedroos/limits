@@ -1,0 +1,393 @@
+All functions in a finite set
+The objective of this exercise is to find all distinct bijections between any two finite sets, but we'll explore related themes.
+We'll use the following sets as examples.
+A={1,2,3}
+B={a,b,c}
+Let's permute in A.
+{(1->a),(2->b),(3->c)}
+{(2->a),(1->b),(3->c)}
+{(3->a),(1->b),(2->c)}
+{(3->a),(2->b),(1->c)}
+{(1->a),(3->b),(2->c)}
+{(2->a),(3->b),(1->c)}
+And permute in B.
+{(1->a),(2->b),(3->c)}
+{(1->a),(2->c),(3->b)}
+{(1->b),(2->a),(3->c)}
+{(1->b),(2->c),(3->a)}
+{(1->c),(2->a),(3->b)}
+{(1->c),(2->b),(3->a)}
+(* The code will use the following shorthand notations: 
+   - (function/@argument) instead of Map[function,argument]
+   - DoSomething[#]& instead of Function[{arg},DoSomething[arg]] 
+   - (x~Take~y) instead of Take[x,y] 
+   - //Column instead of Column@ *)
+In[42]:= Clear[A];
+Clear[B];
+A:={1,2,3};
+B:={"a","b","c"};
+{
+	Labeled[Permutations@A,"PermA",Left],
+	Labeled[Permutations@B,"PermB",Left],
+	Labeled[Subsets@A,"PowerA",Left],
+	Labeled[Subsets@B,"PowerB",Left],
+	Labeled[Tuples[A,2],"CombsA_2",Left],
+	Labeled[Tuples[B,2],"CombsB_2",Left],
+	Labeled[Tuples[{A,B}],"CombsA_B",Left]
+}//Column
+Out[46]= PermA	{{1,2,3},{1,3,2},{2,1,3},{2,3,1},{3,1,2},{3,2,1}}
+PermB	{{a,b,c},{a,c,b},{b,a,c},{b,c,a},{c,a,b},{c,b,a}}
+PowerA	{{},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}}
+PowerB	{{},{a},{b},{c},{a,b},{a,c},{b,c},{a,b,c}}
+CombsA_2	{{1,1},{1,2},{1,3},{2,1},{2,2},{2,3},{3,1},{3,2},{3,3}}
+CombsB_2	{{a,a},{a,b},{a,c},{b,a},{b,b},{b,c},{c,a},{c,b},{c,c}}
+CombsA_B	{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+
+
+Every possible combination between individual elements in A,B (the last list above) forms a relation.
+Intensionally, the relation can be defined as every tuple of size n constructible between n sets.
+In[9]:= Tuples@{A,B}
+Out[9]= {{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+A function adds a restriction: B's elements can not repeat.
+Each of the below is a function.
+In[23]:= Function[{a},{a->#}]/@A&/@B//Column
+Out[23]= {{1->a},{2->a},{3->a}}
+{{1->b},{2->b},{3->b}}
+{{1->c},{2->c},{3->c}}
+
+
+Let's find every function from A to b∈B.
+We'll use sets to denote the domain in each function.
+These sets are, each, one of the subsets of A.
+In[28]:= {#->b}&/@Subsets@A//Column
+Out[28]= {{}->b}
+{{1}->b}
+{{2}->b}
+{{3}->b}
+{{1,2}->b}
+{{1,3}->b}
+{{2,3}->b}
+{{1,2,3}->b}
+
+
+For subsets Subscript[s, 1],Subscript[s, 2],… in A and elements a,b,c in B, the formed functions are the sets 
+{(Subscript[s, 1],a),(Subscript[s, 1],b),(Subscript[s, 1],c)},
+{(Subscript[s, 1],a),(Subscript[s, 1],b),(Subscript[s, 2],c)},...
+These sets are B->A maps.
+In[212]:= Transpose@(Function[{as},{as->#}]/@Subsets@A&/@B)//Column
+Out[212]= {{{}->a},{{}->b},{{}->c}}
+{{{1}->a},{{1}->b},{{1}->c}}
+{{{2}->a},{{2}->b},{{2}->c}}
+{{{3}->a},{{3}->b},{{3}->c}}
+{{{1,2}->a},{{1,2}->b},{{1,2}->c}}
+{{{1,3}->a},{{1,3}->b},{{1,3}->c}}
+{{{2,3}->a},{{2,3}->b},{{2,3}->c}}
+{{{1,2,3}->a},{{1,2,3}->b},{{1,2,3}->c}}
+
+
+Let's visualize it as one combination in A per element in B.
+In[213]:= Labeled[Function[{as},{as->#}]/@Subsets@A,#,Left]&/@B//Column
+Out[213]= a	{{{}->a},{{1}->a},{{2}->a},{{3}->a},{{1,2}->a},{{1,3}->a},{{2,3}->a},{{1,2,3}->a}}
+b	{{{}->b},{{1}->b},{{2}->b},{{3}->b},{{1,2}->b},{{1,3}->b},{{2,3}->b},{{1,2,3}->b}}
+c	{{{}->c},{{1}->c},{{2}->c},{{3}->c},{{1,2}->c},{{1,3}->c},{{2,3}->c},{{1,2,3}->c}}
+
+
+For each element in B, there is a set of combinations in A.
+We'll find the set of all functions by combining every element in each set of combinations.
+For each set, an element is chosen. Then, they're combined into a tuple. (In this case, a triple.)
+Each tuple will be unique, of course.
+Flattening into one set to do this doesn' t work as each set' s boundaries are lost:
+In[177]:= Flatten@(Map[Function[{as},{as->#}],Subsets@A]&/@B)
+Out[177]= {{}->a,{1}->a,{2}->a,{3}->a,{1,2}->a,{1,3}->a,{2,3}->a,{1,2,3}->a,{}->b,{1}->b,{2}->b,{3}->b,{1,2}->b,{1,3}->b,{2,3}->b,{1,2,3}->b,{}->c,{1}->c,{2}->c,{3}->c,{1,2}->c,{1,3}->c,{2,3}->c,{1,2,3}->c}
+Here are the combinations in the domain of the function.
+In[45]:= Subsets@A
+Out[45]= {{},{1},{2},{3},{1,2},{1,3},{2,3},{1,2,3}}
+Let's map each such combination to each element in the codomain.
+In[219]:= Tuples@{Subsets@A,{#}}&/@B//Column
+Out[219]= {{{},a},{{1},a},{{2},a},{{3},a},{{1,2},a},{{1,3},a},{{2,3},a},{{1,2,3},a}}
+{{{},b},{{1},b},{{2},b},{{3},b},{{1,2},b},{{1,3},b},{{2,3},b},{{1,2,3},b}}
+{{{},c},{{1},c},{{2},c},{{3},c},{{1,2},c},{{1,3},c},{{2,3},c},{{1,2,3},c}}
+
+
+Let's treat the outer set as a matrix and transpose it to visualize the codomain as columns and the domain as rows.
+In[220]:= Transpose@(Tuples@{Subsets@A,{#}}&/@B)//Column
+Out[220]= {{{},a},{{},b},{{},c}}
+{{{1},a},{{1},b},{{1},c}}
+{{{2},a},{{2},b},{{2},c}}
+{{{3},a},{{3},b},{{3},c}}
+{{{1,2},a},{{1,2},b},{{1,2},c}}
+{{{1,3},a},{{1,3},b},{{1,3},c}}
+{{{2,3},a},{{2,3},b},{{2,3},c}}
+{{{1,2,3},a},{{1,2,3},b},{{1,2,3},c}}
+
+
+For each element in the codomain of the function B, we have a set of all functions with that element as image.
+To create a combinative function which includes every element in the codomain, every such function must be considered in combination.
+Each of these combinations is a 1:1 relation from a set of such functions to another set of such functions.
+In this example, there are three function sets. We need to construct every triple between the three sets.
+In[186]:= Tuples@(Tuples@{Subsets@A,{#}}&/@B)
+Out[186]= {{{{},a},{{},b},{{},c}},{{{},a},{{},b},{{1},c}},{{{},a},{{},b},{{2},c}},{{{},a},{{},b},{{3},c}},{{{},a},{{},b},{{1,2},c}},{{{},a},{{},b},{{1,3},c}},{{{},a},{{},b},{{2,3},c}}, ⋯498⋯ ,{{{1,2,3},a},{{1,2,3},b},{{1},c}},{{{1,2,3},a},{{1,2,3},b},{{2},c}},{{{1,2,3},a},{{1,2,3},b},{{3},c}},{{{1,2,3},a},{{1,2,3},b},{{1,2},c}},{{{1,2,3},a},{{1,2,3},b},{{1,3},c}},{{{1,2,3},a},{{1,2,3},b},{{2,3},c}},{{{1,2,3},a},{{1,2,3},b},{{1,2,3},c}}}
+large output	show less	show more	show all	set size limit...
+
+
+In[191]:= Length@Tuples@(Tuples@{Subsets@A,{#}}&/@B)
+Out[191]= 512
+There are 512 functions from A to B.
+Let's examine the tail of the triple set.
+In[221]:= Reverse@Tuples@(Tuples@{Subsets@A,{#}}&/@B)~Take~20//Column
+Out[221]= {{{1,2,3},a},{{1,2,3},b},{{1,2,3},c}}
+{{{1,2,3},a},{{1,2,3},b},{{2,3},c}}
+{{{1,2,3},a},{{1,2,3},b},{{1,3},c}}
+{{{1,2,3},a},{{1,2,3},b},{{1,2},c}}
+{{{1,2,3},a},{{1,2,3},b},{{3},c}}
+{{{1,2,3},a},{{1,2,3},b},{{2},c}}
+{{{1,2,3},a},{{1,2,3},b},{{1},c}}
+{{{1,2,3},a},{{1,2,3},b},{{},c}}
+{{{1,2,3},a},{{2,3},b},{{1,2,3},c}}
+{{{1,2,3},a},{{2,3},b},{{2,3},c}}
+{{{1,2,3},a},{{2,3},b},{{1,3},c}}
+{{{1,2,3},a},{{2,3},b},{{1,2},c}}
+{{{1,2,3},a},{{2,3},b},{{3},c}}
+{{{1,2,3},a},{{2,3},b},{{2},c}}
+{{{1,2,3},a},{{2,3},b},{{1},c}}
+{{{1,2,3},a},{{2,3},b},{{},c}}
+{{{1,2,3},a},{{1,3},b},{{1,2,3},c}}
+{{{1,2,3},a},{{1,3},b},{{2,3},c}}
+{{{1,2,3},a},{{1,3},b},{{1,3},c}}
+{{{1,2,3},a},{{1,3},b},{{1,2},c}}
+
+
+Let's consider for a moment the set of all relations.
+This demands the requirement that elements of B do not repeat in the image sets to be lifted.
+A relation can be defined as a set of tuples, with each tuple containing elements from all related sets.
+To find all relations, there must first be found all possible tuples.
+In[195]:= Tuples@{A,B}
+Out[195]= {{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+Now, we combine in any quantity these tuples.
+In[196]:= Subsets@Tuples@{A,B}
+Out[196]= {{},{{1,a}},{{1,b}},{{1,c}},{{2,a}},{{2,b}}, ⋯500⋯ ,{{1,a},{1,b},{1,c},{2,a},{2,c},{3,a},{3,b},{3,c}},{{1,a},{1,b},{1,c},{2,b},{2,c},{3,a},{3,b},{3,c}},{{1,a},{1,b},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}},{{1,a},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}},{{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}},{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}}
+large output	show less	show more	show all	set size limit...
+
+
+In[197]:= Length@Subsets@Tuples@{A,B}
+Out[197]= 512
+Let's look at the tail.
+In[222]:= Reverse@Subsets@Tuples@{A,B}~Take~20//Column
+Out[222]= {{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b}}
+{{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,b},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,b},{1,c},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,b},{1,c},{2,a},{2,c},{3,a},{3,b},{3,c}}
+{{1,b},{1,c},{2,a},{2,b},{3,a},{3,b},{3,c}}
+{{1,b},{1,c},{2,a},{2,b},{2,c},{3,b},{3,c}}
+{{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,c}}
+{{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b}}
+{{1,a},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,c},{2,b},{2,c},{3,a},{3,b},{3,c}}
+
+
+In[201]:= Length@Permutations@Tuples@{A,B}
+Out[201]= 362880
+If the order of the tuples mattered, we' d have 362880 "permutative" relations.
+Here's a sample of such "permutative relations" between A and B:
+In[223]:= Permutations@Tuples@{A,B}~Take~20//Column
+Out[223]= {{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,a},{3,c},{3,b}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,b},{3,a},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,b},{3,c},{3,a}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,c},{3,a},{3,b}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{2,c},{3,c},{3,b},{3,a}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{2,c},{3,b},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{2,c},{3,c},{3,b}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{3,b},{2,c},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{3,b},{3,c},{2,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{3,c},{2,c},{3,b}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,a},{3,c},{3,b},{2,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{2,c},{3,a},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{2,c},{3,c},{3,a}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{3,a},{2,c},{3,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{3,a},{3,c},{2,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{3,c},{2,c},{3,a}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,b},{3,c},{3,a},{2,c}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,c},{2,c},{3,a},{3,b}}
+{{1,a},{1,b},{1,c},{2,a},{2,b},{3,c},{2,c},{3,b},{3,a}}
+
+
+Comparing relations and functions
+In our previously assembled function list, the functions' domains were represented as sets.
+To match the list of relations, let's decompose these sets into individual elements and form pairs.
+Let's separate the tuples into elements.
+In[334]:= Thread@{#}&/@Subsets@A
+Out[334]= {{},{{1}},{{2}},{{3}},{{1},{2}},{{1},{3}},{{2},{3}},{{1},{2},{3}}}
+The domains decomposed into pairs:
+In[335]:= (Function[{as},Thread@(as->x)]/@#&)/@Subsets@A
+Out[335]= {{},{1->x},{2->x},{3->x},{1->x,2->x},{1->x,3->x},{2->x,3->x},{1->x,2->x,3->x}}
+Let's substitute the function's images for x:
+In[386]:= (Column@Tuples@{Subsets@A,{#}}&/@B//Column)~Labeled~"Before"->((Column@(Function[{b},Thread[{b,#}]]/@Subsets@A)&)/@B)~Labeled~"After"
+Out[386]= {{},a}
+{{1},a}
+{{2},a}
+{{3},a}
+{{1,2},a}
+{{1,3},a}
+{{2,3},a}
+{{1,2,3},a}
+
+
+{{},b}
+{{1},b}
+{{2},b}
+{{3},b}
+{{1,2},b}
+{{1,3},b}
+{{2,3},b}
+{{1,2,3},b}
+
+
+{{},c}
+{{1},c}
+{{2},c}
+{{3},c}
+{{1,2},c}
+{{1,3},c}
+{{2,3},c}
+{{1,2,3},c}
+
+
+
+
+Before
+
+->{{}
+{{1,a}}
+{{2,a}}
+{{3,a}}
+{{1,a},{2,a}}
+{{1,a},{3,a}}
+{{2,a},{3,a}}
+{{1,a},{2,a},{3,a}}
+
+,{}
+{{1,b}}
+{{2,b}}
+{{3,b}}
+{{1,b},{2,b}}
+{{1,b},{3,b}}
+{{2,b},{3,b}}
+{{1,b},{2,b},{3,b}}
+
+,{}
+{{1,c}}
+{{2,c}}
+{{3,c}}
+{{1,c},{2,c}}
+{{1,c},{3,c}}
+{{2,c},{3,c}}
+{{1,c},{2,c},{3,c}}
+
+}
+After
+
+
+We'll change the representation from sets of combinations of elements in the domain and elements in the image, to sets of combinations of elements in the image with elements in the domain.
+In[7]:= Column@Take[Reverse@Tuples@{Subsets@A,Subsets@B},20]
+Out[7]= {{1,2,3},{a,b,c}}
+{{1,2,3},{b,c}}
+{{1,2,3},{a,c}}
+{{1,2,3},{a,b}}
+{{1,2,3},{c}}
+{{1,2,3},{b}}
+{{1,2,3},{a}}
+{{1,2,3},{}}
+{{2,3},{a,b,c}}
+{{2,3},{b,c}}
+{{2,3},{a,c}}
+{{2,3},{a,b}}
+{{2,3},{c}}
+{{2,3},{b}}
+{{2,3},{a}}
+{{2,3},{}}
+{{1,3},{a,b,c}}
+{{1,3},{b,c}}
+{{1,3},{a,c}}
+{{1,3},{a,b}}
+
+
+Now, we only need to generate every combination to compose every relation in A, B.
+In[107]:= Column@Subsets@Take[Reverse@Tuples@{Subsets@A,Subsets@B},3]
+Out[107]= {}
+{{{1,2,3},{a,b,c}}}
+{{{1,2,3},{b,c}}}
+{{{1,2,3},{a,c}}}
+{{{1,2,3},{a,b,c}},{{1,2,3},{b,c}}}
+{{{1,2,3},{a,b,c}},{{1,2,3},{a,c}}}
+{{{1,2,3},{b,c}},{{1,2,3},{a,c}}}
+{{{1,2,3},{a,b,c}},{{1,2,3},{b,c}},{{1,2,3},{a,c}}}
+
+
+In[87]:= Length@Tuples[Tuples[{Subsets@A,Subsets@B}],2]
+Out[87]= 4096
+In[97]:= {Mean@Map[Length,Tuples[Tuples[{Subsets@A,Subsets@B}],2]],StandardDeviation@Map[Length,Tuples[Tuples[{Subsets@A,Subsets@B}],2]]}
+Out[97]= {2,0}
+In[29]:= Length@Tuples[Map[Function[{b},Tuples[{Subsets@A,{b}}]],B]]
+Out[29]= 512
+Function kinds
+An injective function is 1:1 and there can be remaining image elements.
+We'll make a change from subsets to elements in the domain.
+In[27]:= Column@Map[Function[{b},Labeled[Column@Map[Function[{as},{as->b}],A],"Function "<>ToString@b,Right]],Take[B,Round@((Length@B)/2)]]
+Out[27]= {1->A}
+{2->A}
+{3->A}
+
+	Function A
+{1->B}
+{2->B}
+{3->B}
+
+	Function B
+
+
+A surjective function has no remaining image elements and elements may not be 1:1 mapped.
+In[12]:= Column@Map[Function[{b},Labeled[Column@Map[Function[{as},{as->b}],Subsets@A],"Function "<>ToString@b,Right]],B]
+Out[12]= {{}->a}
+{{1}->a}
+{{2}->a}
+{{3}->a}
+{{1,2}->a}
+{{1,3}->a}
+{{2,3}->a}
+{{1,2,3}->a}
+
+	Function a
+{{}->b}
+{{1}->b}
+{{2}->b}
+{{3}->b}
+{{1,2}->b}
+{{1,3}->b}
+{{2,3}->b}
+{{1,2,3}->b}
+
+	Function b
+{{}->c}
+{{1}->c}
+{{2}->c}
+{{3}->c}
+{{1,2}->c}
+{{1,3}->c}
+{{2,3}->c}
+{{1,2,3}->c}
+
+	Function c
+
+
+To be continued...

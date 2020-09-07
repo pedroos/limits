@@ -205,7 +205,7 @@ namespace LimitsTests
             Assert.IsFalse(s1.Contains(s3));
         }
 
-        class SymmetricRelation<T> : Relation2<T> 
+        class SymmetricRelation<T> : Relation<T> 
             where T : IEquatable<T>
         {
             public SymmetricRelation() : base(symmetric: true) { }

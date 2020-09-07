@@ -131,8 +131,6 @@ namespace Limits.ElemPrimitiveSum
             new Tuple<T>(c, new Tuple<T>(d, e))))
         { }
 
-
-
         // Isto deve ser recursivo... pois as estruturas das tuplas podem ser diferentes.
         // Uma tupla pode ter uma tupla onde a outra tupla tem um elemento.
         // Parece que aqui haverá problema... pois teremos que checar igualdade de Tuples e 
@@ -142,6 +140,11 @@ namespace Limits.ElemPrimitiveSum
         public override string ToString() => string.Format("({0}, {1})", a, b);
     }
 
+    public class WrongDegreeTupleException : Exception { }
+
+    // A Relation is a Set of Tuples because there are many Tuples in the Relation.
+    // On a tuple of Sets intensionally, a relation means every tuple, of same size as the suple of sets, constructible 
+    // with elements from both sets.
     public abstract class Relation1<T> : Set<Tuple1<T>> 
         where T : IEquatable<T>
     {
@@ -164,20 +167,11 @@ namespace Limits.ElemPrimitiveSum
         }
     }
 
-    public class WrongDegreeTupleException : Exception { }
-
-    public abstract class Relation2<T> : Relation1<T>
+    public abstract class Relation<T> : Relation1<T>
         where T : IEquatable<T>
     {
-        public override bool Symmetric { get; }
-        public override bool Reflexive { get; }
-        public override bool Transitive { get; }
-        public Relation2(bool symmetric = false, bool reflexive = false, bool transitive = false)
-        {
-            Symmetric = symmetric;
-            Reflexive = reflexive;
-            Transitive = transitive;
-        }
+        public Relation(bool symmetric = false, bool reflexive = false, bool transitive = false) : base(symmetric,
+            reflexive, transitive) { }
 
         /// <summary>
         /// Adds pairs of related elements to the relation
