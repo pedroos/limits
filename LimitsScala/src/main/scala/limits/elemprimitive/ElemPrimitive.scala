@@ -2,9 +2,10 @@ package limits.elemprimitive
 
 sealed trait SetItem
 
-case class Set[T](private val elems: scala.collection.mutable.Set[SetItem] = scala.collection.mutable.Set[SetItem]())
-  extends SetItem {
-
+case class Set[T](
+  private val elems: scala.collection.mutable.Set[SetItem] = scala.collection.mutable.Set[SetItem]()
+) extends SetItem
+{
   var valueCount: Int = 0 // Counts only SetElements
 
   def add(elem: SetItem): Unit = {

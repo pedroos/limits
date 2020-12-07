@@ -7,6 +7,5 @@ class LogicSuite extends AnyFunSuite {
     s.add(SetElement(1))
     s.add(SetElement(2))
     s.add(SetElement(3))
-
   }
 }
