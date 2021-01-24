@@ -127,6 +127,7 @@ namespace Limits.ElemPrimitive
     #region Single-type tuples
 
     // Nuple serves only as a common base class for TupleElement and Tuple.
+    // NOTE: This is serving as a poor man's Sum Type. Re-implement it as a sum type.
     public abstract class Nuple<T>
         where T : IEquatable<T> { }
 
