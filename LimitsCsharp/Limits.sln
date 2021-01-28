@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Limits", "Limits\Limits.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LimitsTests", "LimitsTests\LimitsTests.csproj", "{2A926DB8-A493-4BF0-951A-A93D8649848B}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "LimitsFsharp", "..\LimitsFsharp\LimitsFsharp\LimitsFsharp.fsproj", "{5DCD28D9-35A5-457A-87C0-BE2FE4BE255C}"
-EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "LimitsFsharpTests", "..\LimitsFsharp\LimitsFsharpTests\LimitsFsharpTests.fsproj", "{62D9C9D8-2E67-4CF9-B2C2-82A4119B0595}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,14 +21,6 @@ Global
 		{2A926DB8-A493-4BF0-951A-A93D8649848B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A926DB8-A493-4BF0-951A-A93D8649848B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A926DB8-A493-4BF0-951A-A93D8649848B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DCD28D9-35A5-457A-87C0-BE2FE4BE255C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DCD28D9-35A5-457A-87C0-BE2FE4BE255C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DCD28D9-35A5-457A-87C0-BE2FE4BE255C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DCD28D9-35A5-457A-87C0-BE2FE4BE255C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62D9C9D8-2E67-4CF9-B2C2-82A4119B0595}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62D9C9D8-2E67-4CF9-B2C2-82A4119B0595}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62D9C9D8-2E67-4CF9-B2C2-82A4119B0595}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62D9C9D8-2E67-4CF9-B2C2-82A4119B0595}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
