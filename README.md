@@ -1,5 +1,7 @@
 An exploration of foundations of mathematics in programming languages. Begun with C# and Object Orientation modeling Sets, Tuples and progressing towards other objects.
 
+(Note: the continuation of this project is taking place in the PSLab https://github.com/pedroos/PSLab/tree/main/fsharp repository.)
+
 #### Description of some namespaces in the C# project
 
 - ElemPrimitive: an implementation of a Set in Inheritance by modeling a Set Element with a value which is also a Set. It is possible to verify element membership and set equality, including nested Sets. Also defines recursive (single-typed) Ordered Tuples, and tries to implement converting to/from Sets.
